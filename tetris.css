@@ -1,4 +1,11 @@
 .playground{
-	width: 500px;
-	height: 1000px;
+	width: 585px;
+	height: 590px;
+	background-color: #eee;
+	position: relative;
+}
+.playground p{
+	position: absolute;
+	top: 100px;
+	left: 310px;
 }

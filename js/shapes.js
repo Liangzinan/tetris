@@ -5,8 +5,9 @@ function Cell(r,c,img){
 	this.img=img;
 }
 //Shape类型：描述所有图形的属性和方法
-function Shape(){
-
+function Shape(orgi){
+	this.orgi=orgi;//设置参照格的下标
+	this.statei=0;//设置所有图形默认状态的下标为0
 }
 Shape.prototype={
 	IMGS:{
@@ -33,54 +34,84 @@ Shape.prototype={
 		}
 	}
 }
-
 //每种图形类型的对象
 function O(){
-	Shape.call(this);
+	Shape.call(this,0);
 	this.cells=[
 		new Cell(0,4,this.IMGS.O),new Cell(0,5,this.IMGS.O),new Cell(1,4,this.IMGS.O),new Cell(1,5,this.IMGS.O)
-	]
+	];
+	this.states=[
+		State(0,0, 0,+1, +1,0 +1,+1)
+	];
 }
 Object.setPrototypeOf(O.prototype,Shape.prototype);
 function T(){
-	Shape.call(this);
+	Shape.call(this,1);
 	this.cells=[
 		new Cell(0,3,this.IMGS.T),new Cell(0,4,this.IMGS.T),new Cell(0,5,this.IMGS.T),new Cell(1,4,this.IMGS.T)
-	]
+	];
+	this.states=[
+		State(0,-1, 0,0, 0,+1, +1,0),
+		State(-1,0, 0,0, +1,0, 0,-1),
+		State(0,+1, 0,0, 0,-1, -1,0),
+		State(+1,0, 0,0, -1,0, 0,+1)
+	];
 }
 Object.setPrototypeOf(T.prototype,Shape.prototype);
 function I(){
-	Shape.call(this);
+	Shape.call(this,1);
 	this.cells=[
 		new Cell(0,3,this.IMGS.I),new Cell(0,4,this.IMGS.I),new Cell(0,5,this.IMGS.I),new Cell(0,6,this.IMGS.I)
-	]
+	];
+	this.states=[
+		State(0,-1, 0,0, 0,+1, 0,+2),
+		State(-1,0, 0,0, +1,0, +2,0)
+	];
 }
 Object.setPrototypeOf(I.prototype,Shape.prototype);
 function J(){
-	Shape.call(this);
+	Shape.call(this,1);
 	this.cells=[
 		new Cell(0,4,this.IMGS.J),new Cell(0,5,this.IMGS.J),new Cell(1,5,this.IMGS.J),new Cell(2,5,this.IMGS.J)
-	]
+	];
+	this.states=[
+		 State(0,-1, 0,0, +1,0, +2,0),
+		 State(-1,0, 0,0, 0,-1, 0,-2),
+		 State(0,+1, 0,0, -1,0, -2,0),
+		 State(-1,0, 0,0, 0,+1, 0,+2)
+	];
 }
 Object.setPrototypeOf(T.prototype,Shape.prototype);
 function L(){
-	Shape.call(this);
+	Shape.call(this,1);
 	this.cells=[
-		new Cell(0,3,this.IMGS.L),new Cell(0,4,this.IMGS.L),new Cell(0,5,this.IMGS.L),new Cell(1,4,this.IMGS.L)
+		new Cell(0,3,this.IMGS.L),new Cell(1,3,this.IMGS.L),new Cell(1,4,this.IMGS.L),new Cell(1,5,this.IMGS.L)
+	];
+	this.states=[
+		State()
 	]
 }
 Object.setPrototypeOf(T.prototype,Shape.prototype);
 function S(){
-	Shape.call(this);
+	Shape.call(this,3);
 	this.cells=[
-		new Cell(0,3,this.IMGS.S),new Cell(0,4,this.IMGS.S),new Cell(0,5,this.IMGS.S),new Cell(1,4,this.IMGS.S)
-	]
+		new Cell(0,4,this.IMGS.S),new Cell(0,5,this.IMGS.S),new Cell(1,3,this.IMGS.S),new Cell(1,4,this.IMGS.S)
+	];
 }
 Object.setPrototypeOf(T.prototype,Shape.prototype);
 function Z(){
-	Shape.call(this);
+	Shape.call(this,2);
 	this.cells=[
-		new Cell(0,3,this.IMGS.Z),new Cell(0,4,this.IMGS.Z),new Cell(0,5,this.IMGS.Z),new Cell(1,4,this.IMGS.Z)
-	]
+		new Cell(0,3,this.IMGS.Z),new Cell(0,4,this.IMGS.Z),new Cell(1,4,this.IMGS.Z),new Cell(1,5,this.IMGS.Z)
+	];
 }
 Object.setPrototypeOf(T.prototype,Shape.prototype);
+//每个图形每种状态的数据类型
+function State(r0,c0,r1,c1,r2,c2,r3,c3){
+	return [
+		{r:r0,c=c0},
+		{r:r1,c=c1},
+		{r:r2,c=c2},
+		{r:r3,c=c3}
+	]
+}
