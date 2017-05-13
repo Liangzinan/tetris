@@ -19,20 +19,42 @@ Shape.prototype={
 		Z:"img/Z.png",
 		T:"img/T.png"},
 	moveDown:function(){
-		for(var i=0;i<this.cells.length;i++){
-			this.cells[i].r++;
-		}
+		for(var i=0;i<this.cells.length;this.cells[i++].r++){}
 	},
 	moveLeft:function(){
-		for(var i=0;i<this.cells.length;i++){
-			this.cells[i].c--;
-		}
+		for(var i=0;i<this.cells.length;this.cells[i++].c--){}
 	},
 	moveRight:function(){
+		for(var i=0;i<this.cells.length;this.cells[i++].c++){}
+	},
+	rotateR:function(){
+		this.statei++;
+		this.statei==this.states.length && (this.statei=0);
+		this.rotate();
+	},
+	rotateL:function(){
+		this.statei--;
+		this.statei==-1 && (this.statei=this.states.length-1);
+		this.rotate();
+	},
+	rotate:function(){//根据当前state的数据计算图形中每个格的r和c
+		var state=this.states[this.statei];
+		var r=this.cells[this.orgi].r;
+		var c=this.cells[this.orgi].c;
 		for(var i=0;i<this.cells.length;i++){
-			this.cells[i].c++;
+			this.cells[i].r=r+state[i].r;
+			this.cells[i].c=c+state[i].c;
 		}
 	}
+}
+//每个图形每种状态的数据类型
+function State(r0,c0,r1,c1,r2,c2,r3,c3){
+	return [
+		{r:r0,c=c0},
+		{r:r1,c=c1},
+		{r:r2,c=c2},
+		{r:r3,c=c3}
+	]
 }
 //每种图形类型的对象
 function O(){
@@ -106,12 +128,3 @@ function Z(){
 	];
 }
 Object.setPrototypeOf(T.prototype,Shape.prototype);
-//每个图形每种状态的数据类型
-function State(r0,c0,r1,c1,r2,c2,r3,c3){
-	return [
-		{r:r0,c=c0},
-		{r:r1,c=c1},
-		{r:r2,c=c2},
-		{r:r3,c=c3}
-	]
-}
