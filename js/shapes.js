@@ -49,12 +49,13 @@ Shape.prototype={
 }
 //每个图形每种状态的数据类型
 function State(r0,c0,r1,c1,r2,c2,r3,c3){
-	return [
-		{r:r0,c=c0},
-		{r:r1,c=c1},
-		{r:r2,c=c2},
-		{r:r3,c=c3}
-	]
+	var state=[
+		{r:r0,c:c0},
+		{r:r1,c:c1},
+		{r:r2,c:c2},
+		{r:r3,c:c3}
+	];
+	return state;
 }
 //每种图形类型的对象
 function O(){
@@ -63,7 +64,7 @@ function O(){
 		new Cell(0,4,this.IMGS.O),new Cell(0,5,this.IMGS.O),new Cell(1,4,this.IMGS.O),new Cell(1,5,this.IMGS.O)
 	];
 	this.states=[
-		State(0,0, 0,+1, +1,0 +1,+1)
+		State(0,-1, 0,0, +1,-1, +1,0)
 	];
 }
 Object.setPrototypeOf(O.prototype,Shape.prototype);
@@ -103,28 +104,39 @@ function J(){
 		 State(-1,0, 0,0, 0,+1, 0,+2)
 	];
 }
-Object.setPrototypeOf(T.prototype,Shape.prototype);
+Object.setPrototypeOf(J.prototype,Shape.prototype);
 function L(){
 	Shape.call(this,1);
 	this.cells=[
 		new Cell(0,3,this.IMGS.L),new Cell(1,3,this.IMGS.L),new Cell(1,4,this.IMGS.L),new Cell(1,5,this.IMGS.L)
 	];
 	this.states=[
-		State()
+		State(-1,0, 0,0, +1,0, +1,+1),
+		State(0,+1, 0,0, 0,-1, +1,-1),
+		State(+1,0, 0,0, -1,0, -1,-1),
+		State(0,-1, 0,0, 0,+1, -1,+1)
 	]
 }
-Object.setPrototypeOf(T.prototype,Shape.prototype);
+Object.setPrototypeOf(L.prototype,Shape.prototype);
 function S(){
 	Shape.call(this,3);
 	this.cells=[
 		new Cell(0,4,this.IMGS.S),new Cell(0,5,this.IMGS.S),new Cell(1,3,this.IMGS.S),new Cell(1,4,this.IMGS.S)
 	];
+	this.states=[
+		State(-1,0, -1,+1, 0,-1, 0,0),
+		State(0,+1, +1,+1, -1,0, 0,0)
+	]
 }
-Object.setPrototypeOf(T.prototype,Shape.prototype);
+Object.setPrototypeOf(S.prototype,Shape.prototype);
 function Z(){
 	Shape.call(this,2);
 	this.cells=[
 		new Cell(0,3,this.IMGS.Z),new Cell(0,4,this.IMGS.Z),new Cell(1,4,this.IMGS.Z),new Cell(1,5,this.IMGS.Z)
 	];
+	this.states=[
+		State(-1,-1, -1,0, 0,0, 0,+1),
+		State(-1,+1, 0,+1, 0,0, +1,0)
+	]
 }
-Object.setPrototypeOf(T.prototype,Shape.prototype);
+Object.setPrototypeOf(Z.prototype,Shape.prototype);

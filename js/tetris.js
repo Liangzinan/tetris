@@ -1,11 +1,11 @@
 var tetris={
-	CELL_SIZE:28,//每个格子的宽和高
+	CELL_SIZE:26,//每个格子的宽和高
 	RN:20,
 	CN:10,
 	OFFSET:15,//左侧和上方边框修正的宽度
 	pg:null,//保存游戏主界面容器对象
 	shape:null,//保存正在下落的图形
-	interval:1000,
+	interval:200,
 	timer:null,
 	wall:null,//保存所有停止下落的方块对象
 	score:0,
@@ -16,8 +16,8 @@ var tetris={
 	GAMEOVER:0,
 	RUNNING:1,
 	PAUSE:2,//游戏暂停
-	IMG_OVER:"",
-	IMG_PAUSE:"",
+	IMG_OVER:"img/game-over.png",
+	IMG_PAUSE:"img/pause.png",
 	isGameOver:function(){
 		for(var i=0;i<this.nextShape.cells.length;i++){
 			var cell=this.nextShape.cells[i];
@@ -25,7 +25,7 @@ var tetris={
 				return true;
 			}
 		}
-		return true;
+		return false;
 	},
 	randomShape:function(){
 		var random=Math.floor(Math.random()*7+1);
@@ -64,7 +64,7 @@ var tetris={
 				case 39 : self.state==self.RUNNING && self.moveRight();break;
 				case 40 : self.state==self.RUNNING && self.moveDown();break;
 				case 38 : self.state==self.RUNNING && self.rotateR();break;
-				case 90 ：self.state==self.RUNNING && self.rotateL();break;//"Z"
+				case 90 : self.state==self.RUNNING && self.rotateL();break;//"Z"
 				case 83 : self.state==self.GAMEOVER && self.start();break;//"S"
 				case 80 :                      //"P:暂停"
 					if(self.state==self.RUNNING){
@@ -121,7 +121,7 @@ var tetris={
 	canLeft:function(){
 		for(var i=0;i<this.shape.cells.length;i++){
 			var cell=this.shape.cells[i];
-			if(cell.c==0||this.wall[cell.r][cell.c-1]!=null){
+			if(cell.c==0||this.wall[cell.r][cell.c-1]){
 				return false;
 			}
 		}
@@ -187,8 +187,8 @@ var tetris={
 		}
 		return lines;
 	},
-	deleteRow:function(row){//有问题
-		while(this.wall[row-1]){
+	deleteRow:function(r){//有问题
+		/*while(this.wall[row-2]){
 			for(var c=0;c<this.CN;c++){
 				this.wall[row][c]=this.wall[row-1][c];
 				this.wall[row-1][c]=[];
@@ -197,7 +197,18 @@ var tetris={
 				}
 			}
 			row--;
-		}
+		}*/
+	    for(;r>0;r--){
+	        this.wall[r]=this.wall[r-1];
+	        this.wall[r-1]=new Array(this.CN);
+	        for(var c=0;c<this.CN;c++){
+	        this.wall[r][c]!==undefined
+	          &&this.wall[r][c].r++;
+	        }
+	        if(this.wall[r-2].join("")==""){
+	        	break;
+	        }
+    	}
 	},
 	isFullRow:function(row){
 		for(var c=0;c<this.CN;c++){
@@ -208,11 +219,10 @@ var tetris={
 		return true;
 	},
 	paintScore:function(){
-		var spans=document.querySelector(".playground p span");
-		console.log(spans);
-		/*spans[0].innerHTML="this.score";
-		spans[1].innerHTML="this.lines";
-		spans[2].innerHTML="this.level";*/
+		var spans=document.querySelectorAll(".playground>p>span");
+		spans[0].innerHTML=this.score;
+		spans[1].innerHTML=this.lines;
+		spans[2].innerHTML=this.level;
 	},
 	paintWall:function(){
 		var frag=document.createDocumentFragment();
@@ -266,7 +276,7 @@ var tetris={
 		var reg=/<img(.*?)>/g;
 		this.pg.innerHTML=this.pg.innerHTML.replace(reg,"");
 		this.paintShape();
-		self.paintNextShape();
+		this.paintNextShape();
 		this.paintWall();
 		this.paintScore();
 		this.paintState();
